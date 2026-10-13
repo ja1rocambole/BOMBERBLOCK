@@ -10,6 +10,7 @@ import {
 import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
 import { killPlayer, type PlayerObj } from "./player";
 import { maybeSpawnPowerUp } from "./powerup";
+import { sfx } from "../audio";
 
 type BombObj = GameObj & {
   tilePos: TilePos;
@@ -40,6 +41,7 @@ export function tryPlaceBomb(player: PlayerObj): void {
 
 function spawnBomb(tile: TilePos, owner: PlayerObj): void {
   owner.activeBombs++;
+  sfx.placeBomb();
 
   const bomb = k.add([
     k.circle(TILE_SIZE * 0.35),
@@ -94,6 +96,7 @@ function explodeBomb(bomb: BombObj): void {
 
 /** Creates the cross-shaped explosion and applies all of its effects. */
 export function spawnExplosion(center: TilePos, range: number): void {
+  sfx.explosion();
   const tiles: TilePos[] = [center];
 
   for (const dir of DIRECTIONS) {

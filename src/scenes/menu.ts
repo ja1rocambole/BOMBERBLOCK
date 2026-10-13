@@ -1,5 +1,6 @@
 import { k } from "../kaplayCtx";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
+import { sfx } from "../audio";
 
 export function registerMenuScene(): void {
   k.scene("menu", () => {
@@ -22,7 +23,13 @@ export function registerMenuScene(): void {
       k.color(160, 160, 180),
     ]);
 
-    k.onKeyPress("1", () => k.go("game", "single"));
-    k.onKeyPress("2", () => k.go("game", "multi"));
+    k.onKeyPress("1", () => {
+      sfx.select();
+      k.go("game", "single");
+    });
+    k.onKeyPress("2", () => {
+      sfx.select();
+      k.go("game", "multi");
+    });
   });
 }

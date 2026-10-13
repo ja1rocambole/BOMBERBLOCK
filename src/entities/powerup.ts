@@ -9,6 +9,7 @@ import {
   TILE_SIZE,
 } from "../config";
 import { tileToWorld, type TilePos } from "../map";
+import { sfx } from "../audio";
 import type { PlayerObj } from "./player";
 
 export type PowerUpKind = "bomb" | "fire";
@@ -58,6 +59,7 @@ export function spawnPowerUp(tile: TilePos, kind: PowerUpKind): PowerUpObj {
  */
 export function applyPowerUp(player: PlayerObj, powerup: PowerUpObj): void {
   if (!player.alive) return;
+  sfx.powerUp();
 
   if (powerup.kind === "bomb") {
     player.stats.maxBombs = Math.min(player.stats.maxBombs + 1, MAX_BOMBS);

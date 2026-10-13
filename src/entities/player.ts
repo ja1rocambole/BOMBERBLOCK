@@ -10,6 +10,7 @@ import {
   ROWS,
 } from "../config";
 import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
+import { sfx } from "../audio";
 
 export interface PlayerControls {
   up: Key;
@@ -145,5 +146,6 @@ function canOccupy(center: Vec2): boolean {
 export function killPlayer(player: PlayerObj): void {
   if (!player.alive) return;
   player.alive = false;
+  sfx.death();
   k.destroy(player);
 }

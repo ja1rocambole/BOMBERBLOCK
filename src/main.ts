@@ -4,7 +4,13 @@ import { registerMenuScene } from "./scenes/menu";
 import { registerGameScene } from "./scenes/game";
 import { registerGameOverScene } from "./scenes/gameover";
 import { spawnPowerUp, type PowerUpKind } from "./entities/powerup";
+import { audioState, unlockAudio } from "./audio";
 import type { PlayerObj } from "./entities/player";
+
+// Audio can only start after a user gesture (browser autoplay policy).
+for (const event of ["keydown", "pointerdown"]) {
+  window.addEventListener(event, unlockAudio);
+}
 
 registerMenuScene();
 registerGameScene();
@@ -25,5 +31,6 @@ if (import.meta.env.DEV) {
       }),
     spawnPowerUp: (col: number, row: number, kind: PowerUpKind) =>
       spawnPowerUp({ col, row }, kind),
+    audioState,
   };
 }

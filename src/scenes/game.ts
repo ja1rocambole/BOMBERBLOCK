@@ -11,6 +11,7 @@ import {
 import { tryPlaceBomb } from "../entities/bomb";
 import { applyPowerUp, type PowerUpObj } from "../entities/powerup";
 import { attachAI } from "../entities/ai";
+import { sfx } from "../audio";
 
 export type GameMode = "single" | "multi";
 
@@ -61,14 +62,18 @@ export function registerGameScene(): void {
       const humansAlive = alive.filter((p) => p.controls !== null);
 
       let message: string | null = null;
+      let defeat = false;
       if (alive.length <= 1) {
         message = alive[0] ? `${alive[0].playerName} venceu!` : "Empate!";
       } else if (humansAlive.length === 0) {
         message = isMulti ? "As CPUs venceram!" : "Voce perdeu!";
+        defeat = true;
       }
 
       if (message !== null) {
         gameEnded = true;
+        if (defeat) sfx.defeat();
+        else sfx.win();
         // Small delay so the final explosion stays visible.
         k.wait(1.2, () => k.go("gameover", { message }));
       }
