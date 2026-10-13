@@ -1,6 +1,7 @@
 import type { GameObj, Vec2 } from "kaplay";
 import { k } from "./kaplayCtx";
 import { COLORS, COLS, ROWS, TILE_SIZE } from "./config";
+import { addBevel, shade } from "./visuals";
 
 export type TileKind = "empty" | "wall" | "block";
 
@@ -104,25 +105,29 @@ export function spawnLevel(level: Level): void {
       // movePlayer(), so these objects only need their tag and tilePos.
       const kind = level.grid[row][col];
       if (kind === "wall") {
-        k.add([
+        const wall = k.add([
           k.rect(TILE_SIZE, TILE_SIZE),
           k.pos(center),
           k.anchor("center"),
           k.color(...COLORS.wall),
+          k.outline(3, k.rgb(...shade(COLORS.wall, 0.55))),
           k.z(-5),
           "wall",
           { tilePos: { col, row } },
         ]);
+        addBevel(wall, TILE_SIZE, COLORS.wall);
       } else if (kind === "block") {
-        k.add([
+        const block = k.add([
           k.rect(TILE_SIZE - 4, TILE_SIZE - 4),
           k.pos(center),
           k.anchor("center"),
           k.color(...COLORS.block),
+          k.outline(3, k.rgb(...shade(COLORS.block, 0.55))),
           k.z(-5),
           "block",
           { tilePos: { col, row } },
         ]);
+        addBevel(block, TILE_SIZE - 4, COLORS.block);
       }
     }
   }

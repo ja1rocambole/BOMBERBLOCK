@@ -1,6 +1,6 @@
-# Bomberman Clone
+# BomberBlock
 
-Clone do clássico Bomberman rodando no navegador, desenvolvido como teste técnico para vaga de dev full stack Node.
+Jogo estilo Bomberman rodando no navegador, desenvolvido como teste técnico para vaga de dev full stack Node. A identidade visual segue o nome: **tudo é um bloco** — cenário, personagens, bombas e power-ups são cubos com bevel, desenhados por código (sem assets de imagem).
 
 ## Stack
 
@@ -92,7 +92,7 @@ src/
 - [x] Efeitos sonoros sintetizados (Web Audio API, sem assets)
 - [x] Efeitos visuais (screen shake, partículas, animações)
 - [ ] Power-up de velocidade (o `stats.speed` já existe)
-- [ ] Sprites pixel art (hoje o jogo usa formas geométricas)
+- [x] Identidade visual "BomberBlock" (blocos com bevel, sem assets)
 - [ ] Música de fundo
 - [ ] Placar de partidas (melhor de 3/5)
 - [ ] Multiplayer online (WebSocket) — o modo atual é local no mesmo teclado

@@ -10,6 +10,7 @@ import {
 } from "../config";
 import { tileToWorld, type TilePos } from "../map";
 import { sfx } from "../audio";
+import { addBevel, shade } from "../visuals";
 import type { PlayerObj } from "./player";
 
 export type PowerUpKind = "bomb" | "fire";
@@ -30,23 +31,27 @@ export function maybeSpawnPowerUp(tile: TilePos): void {
 }
 
 export function spawnPowerUp(tile: TilePos, kind: PowerUpKind): PowerUpObj {
+  const color = kind === "bomb" ? COLORS.powerupBomb : COLORS.powerupFire;
+  const size = TILE_SIZE * 0.65;
   const powerup = k.add([
-    k.circle(TILE_SIZE * 0.32),
+    k.rect(size, size),
     k.pos(tileToWorld(tile)),
     k.anchor("center"),
-    k.color(...(kind === "bomb" ? COLORS.powerupBomb : COLORS.powerupFire)),
+    k.color(...color),
+    k.outline(2, k.rgb(...shade(color, 0.5))),
     k.area(),
     k.z(4),
     "powerup",
     { tilePos: tile, kind },
   ]) as PowerUpObj;
 
+  addBevel(powerup, size, color);
   powerup.add([
     k.text(kind === "bomb" ? "B" : "F", { size: 14 }),
-    k.pos(0, 0),
+    k.pos(0, 1),
     k.anchor("center"),
     k.color(255, 255, 255),
-    k.z(1),
+    k.z(2),
   ]);
 
   return powerup;

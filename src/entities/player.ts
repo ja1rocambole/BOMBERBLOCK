@@ -12,6 +12,7 @@ import {
 import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
 import { sfx } from "../audio";
 import { burstParticles } from "../effects";
+import { addBevel, shade } from "../visuals";
 
 export interface PlayerControls {
   up: Key;
@@ -69,6 +70,7 @@ export function spawnPlayer(
     k.pos(tileToWorld(spawn)),
     k.anchor("center"),
     k.color(...color),
+    k.outline(3, k.rgb(...shade(color, 0.55))),
     k.area(),
     k.z(10),
     "player",
@@ -85,6 +87,25 @@ export function spawnPlayer(
       } satisfies PlayerStats,
     },
   ]) as PlayerObj;
+
+  // Block character face: bevel + eyes.
+  addBevel(player, PLAYER_SIZE, color);
+  for (const dx of [-6, 6]) {
+    player.add([
+      k.rect(7, 9),
+      k.pos(dx, -3),
+      k.anchor("center"),
+      k.color(255, 255, 255),
+      k.z(1),
+    ]);
+    player.add([
+      k.rect(3, 4),
+      k.pos(dx, -2),
+      k.anchor("center"),
+      k.color(20, 20, 30),
+      k.z(2),
+    ]);
+  }
 
   if (controls) {
     player.onUpdate(() => {

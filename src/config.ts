@@ -35,6 +35,7 @@ export const COLORS = {
   player4: [175, 95, 255] as [number, number, number],
   bomb: [25, 25, 25] as [number, number, number],
   explosion: [255, 170, 40] as [number, number, number],
+  explosionCore: [255, 235, 130] as [number, number, number],
   powerupBomb: [60, 60, 75] as [number, number, number],
   powerupFire: [255, 80, 30] as [number, number, number],
 };

@@ -5,9 +5,10 @@ import { sfx } from "../audio";
 export function registerMenuScene(): void {
   k.scene("menu", () => {
     k.add([
-      k.text("BOMBERMAN CLONE", { size: 42 }),
+      k.text("BOMBERBLOCK", { size: 48 }),
       k.pos(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 120),
       k.anchor("center"),
+      k.color(255, 170, 40),
     ]);
 
     k.add([
