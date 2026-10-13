@@ -1,7 +1,7 @@
 import { k } from "../kaplayCtx";
 import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
 import { tryPlaceBomb } from "./bomb";
-import type { PlayerObj } from "./player";
+import { movePlayer, type PlayerObj } from "./player";
 
 const DIRS = [k.vec2(1, 0), k.vec2(-1, 0), k.vec2(0, 1), k.vec2(0, -1)];
 
@@ -33,9 +33,7 @@ export function attachAI(player: PlayerObj): void {
       if (!away.eq(k.vec2(0, 0))) dir = away.unit();
     }
 
-    if (dir.x !== 0 || dir.y !== 0) {
-      player.move(dir.scale(player.stats.speed));
-    }
+    movePlayer(player, dir);
 
     // Small chance per frame, only when a block is in reach.
     if (fleeTime <= 0 && Math.random() < 0.01) {

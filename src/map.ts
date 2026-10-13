@@ -97,6 +97,8 @@ export function spawnLevel(level: Level): void {
         k.z(-10),
       ]);
 
+      // Collision against walls/blocks is resolved by tile lookups in
+      // movePlayer(), so these objects only need their tag and tilePos.
       const kind = level.grid[row][col];
       if (kind === "wall") {
         k.add([
@@ -104,8 +106,6 @@ export function spawnLevel(level: Level): void {
           k.pos(center),
           k.anchor("center"),
           k.color(...COLORS.wall),
-          k.area(),
-          k.body({ isStatic: true }),
           k.z(-5),
           "wall",
           { tilePos: { col, row } },
@@ -116,8 +116,6 @@ export function spawnLevel(level: Level): void {
           k.pos(center),
           k.anchor("center"),
           k.color(...COLORS.block),
-          k.area(),
-          k.body({ isStatic: true }),
           k.z(-5),
           "block",
           { tilePos: { col, row } },

@@ -4,6 +4,7 @@ import {
   BOMB_TIMER,
   COLORS,
   EXPLOSION_DURATION,
+  PLAYER_SIZE,
   TILE_SIZE,
 } from "../config";
 import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
@@ -15,6 +16,8 @@ type BombObj = GameObj & {
   range: number;
   owner: PlayerObj;
   exploded: boolean;
+  /** True once the owner left the tile; only then the bomb blocks movement. */
+  solid: boolean;
 };
 
 const DIRECTIONS: TilePos[] = [
@@ -52,16 +55,21 @@ function spawnBomb(tile: TilePos, owner: PlayerObj): void {
       range: owner.stats.bombRange,
       owner,
       exploded: false,
+      solid: false,
     },
   ]) as BombObj;
 
-  // The bomb only becomes solid once its owner has left the tile,
-  // otherwise the player would be stuck on top of it.
+  // The bomb only becomes solid once its owner no longer overlaps its
+  // tile, otherwise the player would get stuck on top of it.
   const solidCheck = bomb.onUpdate(() => {
-    const ownerTile = worldToTile(owner.pos);
-    if (!owner.alive || ownerTile.col !== tile.col || ownerTile.row !== tile.row) {
+    const center = tileToWorld(tile);
+    const overlap = TILE_SIZE / 2 + PLAYER_SIZE / 2 - 1;
+    const stillOnTop =
+      Math.abs(owner.pos.x - center.x) < overlap &&
+      Math.abs(owner.pos.y - center.y) < overlap;
+    if (!owner.alive || !stillOnTop) {
       solidCheck.cancel();
-      bomb.use(k.body({ isStatic: true }));
+      bomb.solid = true;
     }
   });
 

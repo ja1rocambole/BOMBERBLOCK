@@ -29,8 +29,8 @@ export const POWERUP_DROP_CHANCE = 0.35;
 export const COLORS = {
   background: [18, 18, 28] as [number, number, number],
   floor: [44, 110, 62] as [number, number, number],
-  wall: [90, 90, 105] as [number, number, number],
-  block: [150, 96, 56] as [number, number, number],
+  wall: [110, 110, 125] as [number, number, number],
+  block: [235, 125, 35] as [number, number, number],
   player1: [80, 140, 255] as [number, number, number],
   player2: [255, 90, 90] as [number, number, number],
   bomb: [25, 25, 25] as [number, number, number],

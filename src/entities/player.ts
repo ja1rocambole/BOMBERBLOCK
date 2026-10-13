@@ -1,13 +1,15 @@
-import type { GameObj, Key } from "kaplay";
+import type { GameObj, Key, Vec2 } from "kaplay";
 import { k } from "../kaplayCtx";
 import {
   COLORS,
+  COLS,
   INITIAL_BOMB_RANGE,
   INITIAL_MAX_BOMBS,
   PLAYER_SIZE,
   PLAYER_SPEED,
+  ROWS,
 } from "../config";
-import { tileToWorld, type TilePos } from "../map";
+import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
 
 export interface PlayerControls {
   up: Key;
@@ -90,14 +92,51 @@ export function spawnPlayer(
     if (k.isKeyDown(controls.up)) dir.y -= 1;
     if (k.isKeyDown(controls.down)) dir.y += 1;
 
-    // move() resolves collisions against objects with body() (walls,
-    // blocks and armed bombs), keeping the player inside the arena.
-    if (dir.x !== 0 || dir.y !== 0) {
-      player.move(dir.unit().scale(player.stats.speed));
-    }
+    movePlayer(player, dir);
   });
 
   return player;
+}
+
+/**
+ * Moves a player with grid-aware collision. KAPLAY's move() does not
+ * resolve collisions against static bodies in top-down games, so we
+ * check the destination tiles manually. Horizontal and vertical axes
+ * are applied separately so the player slides along walls.
+ */
+export function movePlayer(player: PlayerObj, dir: Vec2): void {
+  if (dir.x === 0 && dir.y === 0) return;
+
+  const step = dir.unit().scale(player.stats.speed * k.dt());
+  for (const axis of [k.vec2(step.x, 0), k.vec2(0, step.y)]) {
+    if (axis.x === 0 && axis.y === 0) continue;
+    const next = player.pos.add(axis);
+    if (canOccupy(next)) player.pos = next;
+  }
+}
+
+/** A tile is solid when it holds a wall, a block or an armed bomb. */
+function isSolidTile(tile: TilePos): boolean {
+  if (tile.col < 0 || tile.row < 0 || tile.col >= COLS || tile.row >= ROWS) {
+    return true;
+  }
+  if (getAtTile("wall", tile) || getAtTile("block", tile)) return true;
+
+  // A bomb only blocks movement after its owner has left its tile.
+  const bomb = getAtTile("bomb", tile) as (GameObj & { solid?: boolean }) | undefined;
+  return bomb?.solid === true;
+}
+
+function canOccupy(center: Vec2): boolean {
+  // Slightly smaller than the sprite for smoother cornering.
+  const half = PLAYER_SIZE / 2 - 2;
+  const corners = [
+    k.vec2(center.x - half, center.y - half),
+    k.vec2(center.x + half, center.y - half),
+    k.vec2(center.x - half, center.y + half),
+    k.vec2(center.x + half, center.y + half),
+  ];
+  return corners.every((c) => !isSolidTile(worldToTile(c)));
 }
 
 export function killPlayer(player: PlayerObj): void {
