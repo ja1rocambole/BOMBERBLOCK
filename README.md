@@ -26,19 +26,22 @@ npm run preview  # serve o build de produção localmente
 
 ## Modos de jogo
 
-| Modo | Descrição |
-| --- | --- |
-| **Single Player** | Partida contra um oponente controlado pela CPU |
-| **Multiplayer local** | 2 jogadores no mesmo teclado |
+Toda partida tem **4 personagens** (modo batalha); os jogadores humanos ocupam os primeiros slots e o restante é controlado pela CPU:
 
-Vence o último jogador vivo. Se os dois morrerem na mesma explosão, é empate.
+| Modo | Composição |
+| --- | --- |
+| **Single Player** | Você + 3 CPUs |
+| **Multiplayer local** | 2 jogadores no mesmo teclado + 2 CPUs |
+
+Vence o último personagem vivo. Se os últimos morrerem na mesma explosão, é empate.
 
 ## Controles
 
 | Jogador | Movimento | Bomba |
 | --- | --- | --- |
 | Player 1 (azul) | `W` `A` `S` `D` | `Espaço` |
-| Player 2 / CPU (vermelho) | `←` `→` `↑` `↓` | `Enter` |
+| Player 2 (vermelho) | `←` `→` `↑` `↓` | `Enter` |
+| CPUs (amarelo e roxo) | — | — |
 
 ## Regras implementadas
 

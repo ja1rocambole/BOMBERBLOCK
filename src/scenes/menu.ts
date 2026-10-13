@@ -10,7 +10,7 @@ export function registerMenuScene(): void {
     ]);
 
     k.add([
-      k.text("1 - Single Player (vs CPU)\n2 - Multiplayer (mesmo teclado)", { size: 24 }),
+      k.text("1 - Single Player (voce + 3 CPUs)\n2 - Multiplayer (2 jogadores + 2 CPUs)", { size: 24 }),
       k.pos(GAME_WIDTH / 2, GAME_HEIGHT / 2),
       k.anchor("center"),
     ]);

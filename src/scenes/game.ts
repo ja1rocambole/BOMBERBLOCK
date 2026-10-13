@@ -18,20 +18,28 @@ export function registerGameScene(): void {
     const level = generateLevel();
     spawnLevel(level);
 
-    const players: PlayerObj[] = [
-      spawnPlayer(1, "Player 1", level.spawns[0], P1_CONTROLS, COLORS.player1),
+    // Battle mode: always 4 characters. Humans take the first slots
+    // (1 in single-player, 2 in local multiplayer), CPUs fill the rest.
+    const isMulti = mode === "multi";
+    const slots = [
+      { controls: P1_CONTROLS, color: COLORS.player1 },
+      { controls: isMulti ? P2_CONTROLS : null, color: COLORS.player2 },
+      { controls: null, color: COLORS.player3 },
+      { controls: null, color: COLORS.player4 },
     ];
-    k.onKeyPress(P1_CONTROLS.bomb, () => tryPlaceBomb(players[0]));
 
-    if (mode === "multi") {
-      const p2 = spawnPlayer(2, "Player 2", level.spawns[1], P2_CONTROLS, COLORS.player2);
-      players.push(p2);
-      k.onKeyPress(P2_CONTROLS.bomb, () => tryPlaceBomb(p2));
-    } else {
-      // Single-player: same match rules against a simple CPU opponent.
-      players.push(spawnPlayer(2, "CPU", level.spawns[1], P2_CONTROLS, COLORS.player2));
-      attachAI(players[1]);
-    }
+    const players: PlayerObj[] = [];
+    let cpuCount = 0;
+    slots.forEach((slot, i) => {
+      const name = slot.controls ? `Player ${i + 1}` : `CPU ${++cpuCount}`;
+      const player = spawnPlayer(i + 1, name, level.spawns[i], slot.controls, slot.color);
+      if (!slot.controls) attachAI(player);
+      players.push(player);
+    });
+
+    const [p1, p2] = players;
+    k.onKeyPress(P1_CONTROLS.bomb, () => tryPlaceBomb(p1));
+    if (isMulti) k.onKeyPress(P2_CONTROLS.bomb, () => tryPlaceBomb(p2));
 
     // Walking into an active flame kills the player (standing on a tile
     // when the explosion starts is handled by the explosion itself).

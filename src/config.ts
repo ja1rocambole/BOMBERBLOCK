@@ -30,6 +30,8 @@ export const COLORS = {
   block: [235, 125, 35] as [number, number, number],
   player1: [80, 140, 255] as [number, number, number],
   player2: [255, 90, 90] as [number, number, number],
+  player3: [255, 215, 60] as [number, number, number],
+  player4: [175, 95, 255] as [number, number, number],
   bomb: [25, 25, 25] as [number, number, number],
   explosion: [255, 170, 40] as [number, number, number],
 };

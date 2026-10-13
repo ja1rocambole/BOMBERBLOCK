@@ -34,7 +34,8 @@ export type PlayerObj = GameObj & {
   playerName: string;
   alive: boolean;
   activeBombs: number;
-  controls: PlayerControls;
+  /** Null for CPU-controlled players (they don't listen to the keyboard). */
+  controls: PlayerControls | null;
   stats: PlayerStats;
 };
 
@@ -58,7 +59,7 @@ export function spawnPlayer(
   id: number,
   name: string,
   spawn: TilePos,
-  controls: PlayerControls,
+  controls: PlayerControls | null,
   color: [number, number, number] = COLORS.player1,
 ): PlayerObj {
   const player = k.add([
@@ -83,17 +84,19 @@ export function spawnPlayer(
     },
   ]) as PlayerObj;
 
-  player.onUpdate(() => {
-    if (!player.alive) return;
+  if (controls) {
+    player.onUpdate(() => {
+      if (!player.alive) return;
 
-    const dir = k.vec2(0, 0);
-    if (k.isKeyDown(controls.left)) dir.x -= 1;
-    if (k.isKeyDown(controls.right)) dir.x += 1;
-    if (k.isKeyDown(controls.up)) dir.y -= 1;
-    if (k.isKeyDown(controls.down)) dir.y += 1;
+      const dir = k.vec2(0, 0);
+      if (k.isKeyDown(controls.left)) dir.x -= 1;
+      if (k.isKeyDown(controls.right)) dir.x += 1;
+      if (k.isKeyDown(controls.up)) dir.y -= 1;
+      if (k.isKeyDown(controls.down)) dir.y += 1;
 
-    movePlayer(player, dir);
-  });
+      movePlayer(player, dir);
+    });
+  }
 
   return player;
 }
