@@ -1,5 +1,6 @@
 import { k } from "../kaplayCtx";
-import { COLORS } from "../config";
+import { COLORS, GAME_WIDTH, HUD_HEIGHT } from "../config";
+import { shade } from "../visuals";
 import { generateLevel, spawnLevel } from "../map";
 import {
   killPlayer,
@@ -14,6 +15,45 @@ import { attachAI } from "../entities/ai";
 import { sfx } from "../audio";
 
 export type GameMode = "single" | "multi";
+
+/** Top bar with one live status slot per character. */
+function spawnHUD(players: PlayerObj[]): void {
+  k.add([
+    k.rect(GAME_WIDTH, HUD_HEIGHT),
+    k.pos(0, 0),
+    k.anchor("topleft"),
+    k.color(10, 10, 16),
+    k.z(-20),
+  ]);
+
+  players.forEach((p, i) => {
+    const slotX = (GAME_WIDTH / players.length) * i;
+    const c = p.color;
+
+    const icon = k.add([
+      k.rect(20, 20),
+      k.pos(slotX + 22, HUD_HEIGHT / 2),
+      k.anchor("center"),
+      k.color(c),
+      k.outline(2, k.rgb(...shade([c.r, c.g, c.b], 0.55))),
+      k.opacity(1),
+      k.z(30),
+    ]);
+
+    const label = k.add([
+      k.text("", { size: 13 }),
+      k.pos(slotX + 40, 10),
+      k.color(235, 235, 245),
+      k.z(30),
+    ]);
+
+    label.onUpdate(() => {
+      label.text = `${p.playerName}\nB${p.stats.maxBombs}  F${p.stats.bombRange}`;
+      label.color = p.alive ? k.rgb(235, 235, 245) : k.rgb(110, 110, 125);
+      icon.opacity = p.alive ? 1 : 0.25;
+    });
+  });
+}
 
 export function registerGameScene(): void {
   k.scene("game", (mode: GameMode = "single") => {
@@ -42,6 +82,8 @@ export function registerGameScene(): void {
     const [p1, p2] = players;
     k.onKeyPress(P1_CONTROLS.bomb, () => tryPlaceBomb(p1));
     if (isMulti) k.onKeyPress(P2_CONTROLS.bomb, () => tryPlaceBomb(p2));
+
+    spawnHUD(players);
 
     // Walking into an active flame kills the player (standing on a tile
     // when the explosion starts is handled by the explosion itself).

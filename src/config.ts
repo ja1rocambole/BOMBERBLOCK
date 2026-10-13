@@ -5,8 +5,11 @@ export const TILE_SIZE = 40;
 export const COLS = 15;
 export const ROWS = 13;
 
+/** Height of the HUD bar above the arena. */
+export const HUD_HEIGHT = 56;
+
 export const GAME_WIDTH = COLS * TILE_SIZE;
-export const GAME_HEIGHT = ROWS * TILE_SIZE;
+export const GAME_HEIGHT = HUD_HEIGHT + ROWS * TILE_SIZE;
 
 // Player
 export const PLAYER_SPEED = 140; // px per second

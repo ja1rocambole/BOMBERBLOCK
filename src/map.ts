@@ -1,6 +1,6 @@
 import type { GameObj, Vec2 } from "kaplay";
 import { k } from "./kaplayCtx";
-import { COLORS, COLS, ROWS, TILE_SIZE } from "./config";
+import { COLORS, COLS, HUD_HEIGHT, ROWS, TILE_SIZE } from "./config";
 import { addBevel, shade } from "./visuals";
 
 export type TileKind = "empty" | "wall" | "block";
@@ -19,14 +19,14 @@ export interface Level {
 export function tileToWorld(tile: TilePos): Vec2 {
   return k.vec2(
     tile.col * TILE_SIZE + TILE_SIZE / 2,
-    tile.row * TILE_SIZE + TILE_SIZE / 2,
+    HUD_HEIGHT + tile.row * TILE_SIZE + TILE_SIZE / 2,
   );
 }
 
 export function worldToTile(pos: Vec2): TilePos {
   return {
     col: Math.floor(pos.x / TILE_SIZE),
-    row: Math.floor(pos.y / TILE_SIZE),
+    row: Math.floor((pos.y - HUD_HEIGHT) / TILE_SIZE),
   };
 }
 
