@@ -9,6 +9,7 @@ import {
   type PlayerObj,
 } from "../entities/player";
 import { tryPlaceBomb } from "../entities/bomb";
+import { applyPowerUp, type PowerUpObj } from "../entities/powerup";
 import { attachAI } from "../entities/ai";
 
 export type GameMode = "single" | "multi";
@@ -44,6 +45,11 @@ export function registerGameScene(): void {
     // Walking into an active flame kills the player (standing on a tile
     // when the explosion starts is handled by the explosion itself).
     k.onCollide("player", "explosion", (p) => killPlayer(p as PlayerObj));
+
+    // Walking over a power-up collects it.
+    k.onCollide("player", "powerup", (p, powerup) =>
+      applyPowerUp(p as PlayerObj, powerup as PowerUpObj),
+    );
 
     // Match end: last character standing wins; simultaneous deaths = draw.
     // The match also ends as soon as no HUMAN player is left alive —

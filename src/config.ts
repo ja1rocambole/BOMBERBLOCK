@@ -15,12 +15,13 @@ export const PLAYER_SIZE = 30;
 // Bombs
 export const BOMB_TIMER = 2.5; // seconds until detonation
 export const EXPLOSION_DURATION = 0.4; // seconds the flames stay on screen
-export const INITIAL_BOMB_RANGE = 2; // tiles per direction
+export const INITIAL_BOMB_RANGE = 1; // tiles per direction
 export const INITIAL_MAX_BOMBS = 1; // bombs alive per player
+export const MAX_BOMB_RANGE = 15; // fire power-up cap
+export const MAX_BOMBS = 6; // bomb power-up cap
 
-// Power-ups (NOT implemented yet — the codebase already exposes hooks:
-// see src/entities/powerup.ts and the player `stats` object).
-export const POWERUPS_ENABLED = false;
+// Power-ups
+export const POWERUPS_ENABLED = true;
 export const POWERUP_DROP_CHANCE = 0.35;
 
 export const COLORS = {
@@ -34,4 +35,6 @@ export const COLORS = {
   player4: [175, 95, 255] as [number, number, number],
   bomb: [25, 25, 25] as [number, number, number],
   explosion: [255, 170, 40] as [number, number, number],
+  powerupBomb: [60, 60, 75] as [number, number, number],
+  powerupFire: [255, 80, 30] as [number, number, number],
 };

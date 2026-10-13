@@ -107,6 +107,10 @@ export function spawnExplosion(center: TilePos, range: number): void {
   }
 
   for (const tile of tiles) {
+    // Flames burn power-ups already revealed (classic rule).
+    const revealed = getAtTile("powerup", tile);
+    if (revealed) k.destroy(revealed);
+
     const block = getAtTile("block", tile);
     if (block) {
       k.destroy(block);

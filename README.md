@@ -47,10 +47,19 @@ Vence o último personagem vivo. Se os últimos morrerem na mesma explosão, é 
 
 - Arena 15x13 no padrão clássico: totalmente preenchida com blocos destrutíveis, exceto paredes indestrutíveis (bordas e pilares) e os cantos de spawn
 - Zonas de spawn seguras nos cantos (o jogador nunca nasce encurralado)
-- Bombas com timer de 2,5s e explosão em cruz (alcance de 2 tiles)
+- Bombas com timer de 2,5s e explosão em cruz (alcance inicial de 1 tile)
 - A explosão para em paredes, destrói no máximo 1 bloco por direção e detona outras bombas em cadeia
 - A bomba só se torna sólida depois que o dono sai de cima dela (comportamento clássico)
-- 1 bomba ativa por jogador (limitado por `stats.maxBombs`)
+- Cada jogador começa com 1 bomba ativa por vez
+
+## Power-ups
+
+Blocos destruídos têm 35% de chance de revelar um power-up, coletado ao passar por cima (vale para humanos e CPUs). Explosões queimam power-ups já revelados.
+
+| Power-up | Efeito | Limite |
+| --- | --- | --- |
+| **B** (cinza) | +1 bomba simultânea | 6 bombas |
+| **F** (laranja) | +1 tile de alcance da explosão | 15 tiles |
 
 ## Estrutura do projeto
 
@@ -71,17 +80,16 @@ src/
     └── powerup.ts       # hook para power-ups (ainda não implementado)
 ```
 
-## Preparado para power-ups
+## Arquitetura dos power-ups
 
-Power-ups ficaram fora desta primeira versão de propósito, mas a arquitetura já os prevê:
-
-- `src/entities/powerup.ts` expõe `maybeSpawnPowerUp(tile)`, chamado toda vez que um bloco é destruído — basta ligar `POWERUPS_ENABLED` em `config.ts` e implementar os drops
-- cada jogador tem um objeto `stats` mutável (`speed`, `bombRange`, `maxBombs`) que os power-ups irão modificar
-- constantes `POWERUP_DROP_CHANCE`, `INITIAL_BOMB_RANGE` e `INITIAL_MAX_BOMBS` já estão centralizadas em `config.ts`
+- `src/entities/powerup.ts` concentra spawn (`maybeSpawnPowerUp`, chamado a cada bloco destruído) e efeito (`applyPowerUp`)
+- cada jogador tem um objeto `stats` mutável (`speed`, `bombRange`, `maxBombs`) que os power-ups modificam
+- limites e chances são constantes em `config.ts` (`MAX_BOMBS`, `MAX_BOMB_RANGE`, `POWERUP_DROP_CHANCE`)
 
 ## Roadmap
 
-- [ ] Power-ups (bomba extra, +alcance, +velocidade)
+- [x] Power-ups (bomba extra, +alcance)
+- [ ] Power-up de velocidade (o `stats.speed` já existe)
 - [ ] Sprites e animações (hoje o jogo usa formas geométricas)
 - [ ] Efeitos sonoros e música
 - [ ] Placar de partidas (melhor de 3/5)
