@@ -13,6 +13,7 @@ import { tryPlaceBomb } from "../entities/bomb";
 import { applyPowerUp, type PowerUpObj } from "../entities/powerup";
 import { attachAI } from "../entities/ai";
 import { sfx } from "../audio";
+import { addWin } from "../scores";
 
 export type GameMode = "single" | "multi";
 
@@ -116,8 +117,20 @@ export function registerGameScene(): void {
         gameEnded = true;
         if (defeat) sfx.defeat();
         else sfx.win();
+
+        const winner = alive.length === 1 ? alive[0] : null;
+        if (winner) addWin(winner.playerName);
+
         // Small delay so the final explosion stays visible.
-        k.wait(1.2, () => k.go("gameover", { message }));
+        k.wait(1.2, () =>
+          k.go("gameover", {
+            message,
+            mode,
+            winnerColor: winner
+              ? [winner.color.r, winner.color.g, winner.color.b]
+              : null,
+          }),
+        );
       }
     });
   });

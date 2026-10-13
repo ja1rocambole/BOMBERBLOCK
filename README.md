@@ -35,6 +35,12 @@ Toda partida tem **4 personagens** (modo batalha); os jogadores humanos ocupam o
 
 Vence o último personagem vivo. Se os últimos morrerem na mesma explosão, é empate. A partida também termina quando todos os jogadores humanos são eliminados (derrota), mesmo que ainda restem CPUs.
 
+## Interface
+
+- **Menu** navegável com `←` setas/`W`/`S` + `Enter` (ou `Espaço`) para confirmar, com legenda dos power-ups
+- **HUD** durante a partida: status ao vivo dos 4 personagens (nome, bombas `B`, alcance `F`); eliminados ficam esmaecidos
+- **Fim de jogo**: vencedor na cor dele, placar de vitórias acumulado entre partidas, `R` para revanche instantânea e `Enter` para o menu
+
 ## Controles
 
 | Jogador | Movimento | Bomba |
