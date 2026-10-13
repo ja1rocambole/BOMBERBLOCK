@@ -42,7 +42,7 @@ Vence o último jogador vivo. Se os dois morrerem na mesma explosão, é empate.
 
 ## Regras implementadas
 
-- Arena 15x13 com paredes indestrutíveis (bordas e pilares) e blocos destrutíveis gerados aleatoriamente a cada partida
+- Arena 15x13 no padrão clássico: totalmente preenchida com blocos destrutíveis, exceto paredes indestrutíveis (bordas e pilares) e os cantos de spawn
 - Zonas de spawn seguras nos cantos (o jogador nunca nasce encurralado)
 - Bombas com timer de 2,5s e explosão em cruz (alcance de 2 tiles)
 - A explosão para em paredes, destrói no máximo 1 bloco por direção e detona outras bombas em cadeia

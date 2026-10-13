@@ -1,6 +1,6 @@
 import type { GameObj, Vec2 } from "kaplay";
 import { k } from "./kaplayCtx";
-import { BLOCK_FILL_CHANCE, COLORS, COLS, ROWS, TILE_SIZE } from "./config";
+import { COLORS, COLS, ROWS, TILE_SIZE } from "./config";
 
 export type TileKind = "empty" | "wall" | "block";
 
@@ -53,6 +53,9 @@ export function generateLevel(): Level {
   const isSafe = (col: number, row: number) =>
     safe.some((t) => t.col === col && t.row === row);
 
+  // Classic Bomberman layout: the arena starts completely filled with
+  // destructible blocks, except for the walls/pillars and the spawn
+  // corners where the players begin.
   const grid: TileKind[][] = [];
   for (let row = 0; row < ROWS; row++) {
     const line: TileKind[] = [];
@@ -61,7 +64,7 @@ export function generateLevel(): Level {
       const isPillar = row % 2 === 0 && col % 2 === 0;
       if (isBorder || isPillar) {
         line.push("wall");
-      } else if (!isSafe(col, row) && Math.random() < BLOCK_FILL_CHANCE) {
+      } else if (!isSafe(col, row)) {
         line.push("block");
       } else {
         line.push("empty");

@@ -18,9 +18,6 @@ export const EXPLOSION_DURATION = 0.4; // seconds the flames stay on screen
 export const INITIAL_BOMB_RANGE = 2; // tiles per direction
 export const INITIAL_MAX_BOMBS = 1; // bombs alive per player
 
-// Map generation
-export const BLOCK_FILL_CHANCE = 0.65;
-
 // Power-ups (NOT implemented yet — the codebase already exposes hooks:
 // see src/entities/powerup.ts and the player `stats` object).
 export const POWERUPS_ENABLED = false;
