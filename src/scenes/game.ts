@@ -9,6 +9,7 @@ import {
   type PlayerObj,
 } from "../entities/player";
 import { tryPlaceBomb } from "../entities/bomb";
+import { attachAI } from "../entities/ai";
 
 export type GameMode = "single" | "multi";
 
@@ -26,6 +27,10 @@ export function registerGameScene(): void {
       const p2 = spawnPlayer(2, "Player 2", level.spawns[1], P2_CONTROLS, COLORS.player2);
       players.push(p2);
       k.onKeyPress(P2_CONTROLS.bomb, () => tryPlaceBomb(p2));
+    } else {
+      // Single-player: same match rules against a simple CPU opponent.
+      players.push(spawnPlayer(2, "CPU", level.spawns[1], P2_CONTROLS, COLORS.player2));
+      attachAI(players[1]);
     }
 
     // Walking into an active flame kills the player (standing on a tile
