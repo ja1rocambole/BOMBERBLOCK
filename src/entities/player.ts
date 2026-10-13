@@ -99,3 +99,9 @@ export function spawnPlayer(
 
   return player;
 }
+
+export function killPlayer(player: PlayerObj): void {
+  if (!player.alive) return;
+  player.alive = false;
+  k.destroy(player);
+}
