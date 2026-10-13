@@ -11,6 +11,7 @@ import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
 import { killPlayer, type PlayerObj } from "./player";
 import { maybeSpawnPowerUp } from "./powerup";
 import { sfx } from "../audio";
+import { burstParticles } from "../effects";
 
 type BombObj = GameObj & {
   tilePos: TilePos;
@@ -50,6 +51,7 @@ function spawnBomb(tile: TilePos, owner: PlayerObj): void {
     k.color(...COLORS.bomb),
     k.area(),
     k.opacity(1),
+    k.scale(1),
     k.z(5),
     "bomb",
     {
@@ -75,9 +77,11 @@ function spawnBomb(tile: TilePos, owner: PlayerObj): void {
     }
   });
 
-  // Blink while the fuse burns.
+  // Blink and pulse while the fuse burns.
   bomb.onUpdate(() => {
     bomb.opacity = k.wave(0.35, 1, k.time() * 8);
+    const s = k.wave(0.9, 1.15, k.time() * 6);
+    bomb.scale = k.vec2(s, s);
   });
 
   k.wait(BOMB_TIMER, () => explodeBomb(bomb));
@@ -97,6 +101,8 @@ function explodeBomb(bomb: BombObj): void {
 /** Creates the cross-shaped explosion and applies all of its effects. */
 export function spawnExplosion(center: TilePos, range: number): void {
   sfx.explosion();
+  // Screen shake grows with the explosion range.
+  k.shake(Math.min(4 + range * 2, 14));
   const tiles: TilePos[] = [center];
 
   for (const dir of DIRECTIONS) {
@@ -116,6 +122,7 @@ export function spawnExplosion(center: TilePos, range: number): void {
 
     const block = getAtTile("block", tile);
     if (block) {
+      burstParticles(tileToWorld(tile), COLORS.block, 7);
       k.destroy(block);
       maybeSpawnPowerUp(tile);
     }
@@ -124,18 +131,21 @@ export function spawnExplosion(center: TilePos, range: number): void {
     const chainedBomb = getAtTile("bomb", tile) as BombObj | undefined;
     if (chainedBomb) explodeBomb(chainedBomb);
 
-    k.add([
+    // Flames pop in with a quick scale animation.
+    const flame = k.add([
       k.rect(TILE_SIZE - 6, TILE_SIZE - 6),
       k.pos(tileToWorld(tile)),
       k.anchor("center"),
       k.color(...COLORS.explosion),
       k.opacity(0.9),
       k.area(),
+      k.scale(0.3),
       k.z(15),
       k.lifespan(EXPLOSION_DURATION, { fade: 0.15 }),
       "explosion",
       { tilePos: tile },
     ]);
+    k.tween(0.3, 1, 0.1, (s) => (flame.scale = k.vec2(s, s)), k.easings.easeOutQuad);
   }
 
   // Kills players already standing on any affected tile. Walking into an

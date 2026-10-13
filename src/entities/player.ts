@@ -11,6 +11,7 @@ import {
 } from "../config";
 import { getAtTile, tileToWorld, worldToTile, type TilePos } from "../map";
 import { sfx } from "../audio";
+import { burstParticles } from "../effects";
 
 export interface PlayerControls {
   up: Key;
@@ -147,5 +148,7 @@ export function killPlayer(player: PlayerObj): void {
   if (!player.alive) return;
   player.alive = false;
   sfx.death();
+  const c = player.color;
+  burstParticles(player.pos, [c.r, c.g, c.b], 12);
   k.destroy(player);
 }

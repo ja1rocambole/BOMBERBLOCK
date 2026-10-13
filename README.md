@@ -89,8 +89,10 @@ src/
 ## Roadmap
 
 - [x] Power-ups (bomba extra, +alcance)
+- [x] Efeitos sonoros sintetizados (Web Audio API, sem assets)
+- [x] Efeitos visuais (screen shake, partículas, animações)
 - [ ] Power-up de velocidade (o `stats.speed` já existe)
-- [ ] Sprites e animações (hoje o jogo usa formas geométricas)
-- [ ] Efeitos sonoros e música
+- [ ] Sprites pixel art (hoje o jogo usa formas geométricas)
+- [ ] Música de fundo
 - [ ] Placar de partidas (melhor de 3/5)
 - [ ] Multiplayer online (WebSocket) — o modo atual é local no mesmo teclado
