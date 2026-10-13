@@ -45,15 +45,26 @@ export function registerGameScene(): void {
     // when the explosion starts is handled by the explosion itself).
     k.onCollide("player", "explosion", (p) => killPlayer(p as PlayerObj));
 
-    // Match end: last player standing wins; simultaneous deaths = draw.
+    // Match end: last character standing wins; simultaneous deaths = draw.
+    // The match also ends as soon as no HUMAN player is left alive —
+    // no point watching the CPUs finish it among themselves.
     let gameEnded = false;
     k.onDestroy("player", () => {
       if (gameEnded) return;
       const alive = players.filter((p) => p.alive);
-      if (players.length > 1 && alive.length <= 1) {
+      const humansAlive = alive.filter((p) => p.controls !== null);
+
+      let message: string | null = null;
+      if (alive.length <= 1) {
+        message = alive[0] ? `${alive[0].playerName} venceu!` : "Empate!";
+      } else if (humansAlive.length === 0) {
+        message = isMulti ? "As CPUs venceram!" : "Voce perdeu!";
+      }
+
+      if (message !== null) {
         gameEnded = true;
         // Small delay so the final explosion stays visible.
-        k.wait(1.2, () => k.go("gameover", { winner: alive[0]?.playerName ?? null }));
+        k.wait(1.2, () => k.go("gameover", { message }));
       }
     });
   });

@@ -33,7 +33,7 @@ Toda partida tem **4 personagens** (modo batalha); os jogadores humanos ocupam o
 | **Single Player** | Você + 3 CPUs |
 | **Multiplayer local** | 2 jogadores no mesmo teclado + 2 CPUs |
 
-Vence o último personagem vivo. Se os últimos morrerem na mesma explosão, é empate.
+Vence o último personagem vivo. Se os últimos morrerem na mesma explosão, é empate. A partida também termina quando todos os jogadores humanos são eliminados (derrota), mesmo que ainda restem CPUs.
 
 ## Controles
 

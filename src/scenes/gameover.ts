@@ -2,14 +2,14 @@ import { k } from "../kaplayCtx";
 import { GAME_HEIGHT, GAME_WIDTH } from "../config";
 
 export interface GameOverResult {
-  /** Name of the winning player, or null on a draw. */
-  winner: string | null;
+  /** Final message: winner name, draw or defeat. */
+  message: string;
 }
 
 export function registerGameOverScene(): void {
-  k.scene("gameover", ({ winner }: GameOverResult) => {
+  k.scene("gameover", ({ message }: GameOverResult) => {
     k.add([
-      k.text(winner ? `${winner} venceu!` : "Empate!", { size: 36 }),
+      k.text(message, { size: 36 }),
       k.pos(GAME_WIDTH / 2, GAME_HEIGHT / 2 - 40),
       k.anchor("center"),
     ]);
