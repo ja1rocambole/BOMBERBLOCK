@@ -10,7 +10,7 @@ Jogo estilo Bomberman que roda **100% no navegador**, desenvolvido como teste t�
 **Pré-requisito:** [Node.js](https://nodejs.org/) 18 ou superior. Verifique com `node -v`.
 
 ```bash
-git clone <url-do-repositorio>
+git clone https://github.com/ja1rocambole/BOMBERBLOCK.git
 cd clone-bomberman
 npm install
 npm run dev
@@ -38,7 +38,7 @@ Toda partida tem **4 personagens** (modo batalha). Os humanos ocupam os primeiro
 | **Single Player**     | Você + 3 CPUs                         |
 | **Multiplayer local** | 2 jogadores no mesmo teclado + 2 CPUs |
 
-**Objetivo:** ser o último personagem vivo. Mortes simultâneas na mesma explosão resultam em empate, e a partida termina se todos os humanos forem eliminados.
+**Objetivo:** ser o último personagem vivo a partida termina se todos os humanos forem eliminados.
 
 ### Controles
 
