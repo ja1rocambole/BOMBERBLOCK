@@ -1,6 +1,6 @@
 # BomberBlock
 
-Jogo estilo Bomberman que roda **100% no navegador**, desenvolvido como teste técnico para vaga de dev full stack Node. A identidade visual segue o nome: **tudo é um bloco** — cenário, personagens, bombas e power-ups são cubos com bevel, desenhados por código (sem nenhum asset de imagem ou áudio).
+Jogo estilo Bomberman que roda **100% no navegador**, desenvolvido como teste técnico para vaga de dev na Conta Dev. A identidade visual segue o nome: **tudo é um bloco** — cenário, personagens, bombas e power-ups são cubos com bevel, desenhados por código (sem nenhum asset de imagem ou áudio).
 
 ![Menu](docs/screenshots/menu.png)
 ![Gameplay](docs/screenshots/gameplay.png)
